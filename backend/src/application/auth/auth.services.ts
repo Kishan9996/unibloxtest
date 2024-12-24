@@ -2,9 +2,14 @@ import jwt from 'jsonwebtoken';
 import { IJwtUser } from './interface';
 import { ACCESS_TOKEN_EXPIRY, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_EXPIRY, REFRESH_TOKEN_SECRET } from '../../config';
 import { UserServices } from '../user';
+import { User } from '@prisma/client';
+import { promisify } from 'util';
 
 export class AuthServices {
   private userServices: UserServices;
+  // Promisify jwt.verify for async/await usage
+  private verifyJwt = promisify(jwt.verify);
+
   constructor() {
     this.userServices = new UserServices();
   }
@@ -58,6 +63,10 @@ export class AuthServices {
       });
       return { isLoggedIn: true, ...tokens, user: { ...userDetails } };
     }
+  }
+
+  public verifyAndFetchTokenDetails(token: string) {
+    return jwt.verify(token,ACCESS_TOKEN_SECRET)
   }
 
   async adminLogin(data: { email: string; password: string }, role: 'ADMIN' | 'USER' = 'ADMIN') {
