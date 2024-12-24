@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import { API_BASE_PATH, DEBUG_MODE } from '../config';
 import authRouter from './auth/auth.router';
+import productRouter from './product/product.router';
 export class RoutingServicesWithUtils {
   private app: express.Express;
   private routers: Record<string, Router>;
@@ -9,6 +10,7 @@ export class RoutingServicesWithUtils {
     // register routes here from each modules
     this.routers = {
       auth: authRouter,
+      product:productRouter
     };
   }
 
