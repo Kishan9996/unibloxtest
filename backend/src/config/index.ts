@@ -18,7 +18,7 @@ export const APP: AppConfig = {
     return `${APP.HTTP}://${APP.HOST}:${APP.PORT}`;
   },
 };
-export const BACKEND_SERVER_URL = APP.generateAppLink();
+export const BACKEND_SERVER_URL = process.env.BACKEND_SERVER_URL ?? '';
 
 interface SwaggerCredentials {
   SWAGGER_USERNAME: string;

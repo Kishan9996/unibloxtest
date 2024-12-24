@@ -1,9 +1,10 @@
 import { BACKEND_SERVER_URL } from '../../config';
+import { authSwagger } from '../../interface/auth/auth.swagger';
 
 export const swaggerDoc: any = {
   openapi: '3.0.0',
   info: {
-    title: 'Tool',
+    title: 'Test',
     version: '1.0.0',
   },
   components: {
@@ -15,17 +16,7 @@ export const swaggerDoc: any = {
         bearerFormat: 'JWT',
       },
     },
-    parameters: {
-      IdParam: {
-        name: 'id',
-        in: 'path',
-        required: true,
-        schema: {
-          type: 'string', // adjust type as per your actual ID type
-        },
-        description: 'ID of the entity details',
-      },
-    },
+    parameters: {},
   },
   security: [
     {
@@ -38,5 +29,7 @@ export const swaggerDoc: any = {
     },
   ],
   tags: [],
-  paths: {},
+  paths: {
+    ...authSwagger,
+  },
 };
