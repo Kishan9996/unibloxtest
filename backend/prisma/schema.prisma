@@ -12,6 +12,8 @@ model User {
   name                     String
   email                    String   @unique
   password                 String
+  isLoggedIn   Boolean @default(false)
+  loginSecrete String?
   discountApplicationCount Int      @default(0)
   role                     String   @default("USER") // String instead of enum
   createdAt                DateTime @default(now()) // Automatically set to the current timestamp on creation

@@ -5,6 +5,7 @@ export enum ApplicationNames {
   Product = 'product',
   Order = 'order'
 }
+export const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 export const HttpStatusCodes: { [key: string]: { value: number; description: string; usage: string } } = {
   STATUS_CONTINUE: {

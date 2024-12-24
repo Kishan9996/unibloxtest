@@ -3,7 +3,9 @@
     "transpileOnly": true,
     "files": true,
     "compilerOptions": {
-      "typeRoots": ["node_modules/@types", "src/types"]
+      "typeRoots": ["node_modules/@types", "src/types"],
+      "moduleResolution": "node",
+      "esModuleInterop": true
     }
   },
   "compilerOptions": {
