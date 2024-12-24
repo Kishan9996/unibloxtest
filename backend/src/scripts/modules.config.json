@@ -1,0 +1,20 @@
+{
+  "application": {
+    "tests": {
+      "files": ["index.ts"]
+    },
+    "files": ["interface.d.ts", "index.ts", "<moduleName>.services.ts"]
+  },
+  "interface": {
+    "tests": {
+      "files": ["index.ts"]
+    },
+    "files": ["<moduleName>.controller.ts", "<moduleName>.router.ts", "index.ts", "response.messages.ts", "schema.ts","<moduleName>.swagger.ts"]
+  },
+  "domain": {
+    "tests": {
+      "files": ["index.ts"]
+    },
+    "files": ["index.ts", "<moduleName>.repository.ts", "types.d.ts"]
+  }
+}
