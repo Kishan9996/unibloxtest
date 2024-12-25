@@ -5,6 +5,7 @@ export enum ApplicationNames {
   Product = 'product',
   Order = 'order',
   Cart = 'cart',
+  DiscountCode = 'discountCode',
 }
 export const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 

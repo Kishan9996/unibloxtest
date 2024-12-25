@@ -40,6 +40,12 @@ export class UserRepository extends BaseRepository {
     });
   }
 
+  async findUserById(id: string): Promise<User | null> {
+    return await this.prisma.user.findUnique({
+      where: { id },
+    });
+  }
+
   public async createPassword(password: string): Promise<string> {
     return await this.passwordService.generateHashPassword(password);
   }

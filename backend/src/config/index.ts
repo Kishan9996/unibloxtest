@@ -50,3 +50,5 @@ export const REFRESH_TOKEN_EXPIRY = '7d'; // You can set your desired expiry
 export const FORGOT_PASSWORD_URL = process.env.FORGOT_PASSWORD_URL ?? '';
 
 export const DEBUG_MODE = process.env.DEBUG_MODE === 'true';
+
+export const DISCOUNT_REP_THRESHOLD = parseInt(process.env.DISCOUNT_REP_THRESHOLD ?? '5', 5);

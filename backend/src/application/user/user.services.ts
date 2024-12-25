@@ -68,4 +68,8 @@ export class UserServices {
   public async creteLoginSecrete(secrete: string): Promise<string> {
     return await this.userRepository.createPassword(secrete);
   }
+
+  public async findUserById(id: string): Promise<User | null> {
+    return await this.userRepository.findUserById(id);
+  }
 }

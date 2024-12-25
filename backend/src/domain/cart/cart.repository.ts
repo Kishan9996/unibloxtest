@@ -14,20 +14,20 @@ export class CartRepository extends BaseRepository {
   public async createCart(data: Prisma.CartCreateArgs): Promise<Cart | null> {
     return await this.prisma.cart.create(data);
   }
+
+  public async updateCart(data: Prisma.CartUpdateArgs): Promise<Cart | null> {
+    return await this.prisma.cart.update(data);
+  }
   public async findCartByUserId(userId: string): Promise<Cart | null> {
     return await this.prisma.cart.findFirst({
       where: {
         userId,
+        checkedOut: false,
       },
     });
   }
 
-  public async findUniqueCart(id: string, userId: string) {
-    return await this.prisma.cart.findUnique({
-      where: {
-        id,
-        userId,
-      },
-    });
+  public async findUniqueCart(data: Prisma.CartFindUniqueArgs) {
+    return await this.prisma.cart.findUnique(data);
   }
 }

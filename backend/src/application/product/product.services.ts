@@ -35,6 +35,16 @@ export class ProductServices {
     });
   }
 
+  public async findProductsById(productIds: string[]) {
+    return await this.productRepository.findManyProducts({
+      where: {
+        id: {
+          in: productIds,
+        },
+      },
+    });
+  }
+
   public async checkProductsAndQuantityAvailable(productData: ProductAddTOCartSchemaType) {
     const productConditions = productData.map((item) => ({
       id: item.productId,
@@ -45,6 +55,6 @@ export class ProductServices {
         OR: productConditions,
       },
     });
-    return availableProducts.length === productData.length;
+    return availableProducts;
   }
 }

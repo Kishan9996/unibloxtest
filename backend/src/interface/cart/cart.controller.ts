@@ -3,10 +3,9 @@ import { ApplicationNames, HttpStatusCodes } from '../../const/constant';
 import { Route } from '../../infrastructure/decorators/routingDecorators';
 import { BaseRouter } from '../../infrastructure/base/baseRouterWithController';
 import { zodSchemaValidator } from '../../infrastructure/middlewares/schemaMiddleware';
-
 import { authenticationMiddleware } from '../../infrastructure/middlewares/authMiddleware';
-import { CartServices } from '../../application/cart/cart.services';
-import schema, { ProductAddTOCartSchemaType } from './schema';
+import schema, { CheckOutSchemaType, ProductAddTOCartSchemaType } from './schema';
+import { CartServices } from '../../application/cart';
 
 export class CartController extends BaseRouter {
   private cartServices: CartServices;
@@ -49,21 +48,21 @@ export class CartController extends BaseRouter {
       });
     }
   }
+
   @Route({
-    method: 'get',
-    path: '/checkout/:id',
+    method: 'post',
+    path: '/checkout',
     middlewares: [
       zodSchemaValidator({
-        schema: schema.productAddTOCartSchema,
+        schema: schema.checkOutSchema,
         validateQuery: false,
       }),
     ],
   })
-  async checkOut(req: Request<{ id: string }, {}, {}, {}>, res: Response) {
+  async checkOut(req: Request<{}, {}, CheckOutSchemaType, {}>, res: Response) {
     try {
-      const { id } = req.params;
-
-      const checkout = await this.cartServices.checkoutCart(id, req.user);
+      const user: any = req.user;
+      const checkout = await this.cartServices.checkoutCart(req.body, user.id);
       if (checkout) {
         return this.responseHandler.success({
           res,

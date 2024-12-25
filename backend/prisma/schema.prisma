@@ -35,10 +35,11 @@ model Product {
 }
 
 model Cart {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  createdAt DateTime @default(now()) // Automatically set to the current timestamp on creation
-  updatedAt DateTime @updatedAt // Automatically updated every time the record is modified
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  checkedOut Boolean  @default(false)
+  createdAt  DateTime @default(now()) // Automatically set to the current timestamp on creation
+  updatedAt  DateTime @updatedAt // Automatically updated every time the record is modified
 
   user  User       @relation(fields: [userId], references: [id])
   items CartItem[]
@@ -49,6 +50,7 @@ model CartItem {
   id        String   @id @default(uuid())
   cartId    String
   productId String
+  price     Float
   quantity  Int      @default(1)
   createdAt DateTime @default(now()) // Automatically set to the current timestamp on creation
   updatedAt DateTime @updatedAt // Automatically updated every time the record is modified
@@ -58,25 +60,25 @@ model CartItem {
 }
 
 model DiscountCode {
-  id         String   @id @default(uuid())
-  code       String   @unique
-  isRedeemed Boolean  @default(false)
-  orderId    String?  @unique
-  createdAt  DateTime @default(now()) // Automatically set to the current timestamp on creation
+  id                String   @id @default(uuid())
+  isRedeemed        Boolean  @default(false)
+  isApprovedByAdmin Boolean  @default(false)
+  orderId           String?  @unique
+  createdAt         DateTime @default(now()) // Automatically set to the current timestamp on creation
 
   discountValue Float   @default(10.0)
   Order         Order[]
 }
 
 model Order {
-  id          String @id @default(uuid())
-  userId      String
-  user        User   @relation(fields: [userId], references: [id])
-  cartId      String
-  totalAmount Float
-
-  cart           Cart          @relation(fields: [cartId], references: [id])
-  discountCode   DiscountCode? @relation(fields: [discountCodeId], references: [id])
+  id             String  @id @default(uuid())
+  userId         String
+  user           User    @relation(fields: [userId], references: [id])
+  cartId         String
+  totalAmount    Float
   discountCodeId String?
-  createdAt      DateTime      @default(now()) // Automatically set to the current timestamp on creation
+
+  cart         Cart          @relation(fields: [cartId], references: [id])
+  discountCode DiscountCode? @relation(fields: [discountCodeId], references: [id])
+  createdAt    DateTime      @default(now()) // Automatically set to the current timestamp on creation
 }
