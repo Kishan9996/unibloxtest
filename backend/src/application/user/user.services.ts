@@ -112,12 +112,13 @@ export class UserServices {
         user.orders.forEach((order: any) => {
           order.cart.items.forEach((item: any) => {
             totalItemsPurchased += item.quantity;
-            totalAmountSpent += item.quantity * item.price;
           });
-
           if (order.discountCode) {
-            totalDiscount += order.discountCode.discountValue;
+            totalAmountSpent += order.amountAfterDiscount;
+            totalDiscount += order.totalAmount - order.amountAfterDiscount;
             discountCodes.add(order.discountCode.id);
+          } else {
+            totalAmountSpent += order.totalAmount;
           }
         });
         return {

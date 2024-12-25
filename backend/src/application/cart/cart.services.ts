@@ -138,7 +138,7 @@ export class CartServices {
           const discountedPrice = this.applyDiscount(totalAmount, discountCode.discountValue);
           // redeem discount code
           await this.discountCodeService.redeemDiscountCode(discountCode.id);
-          orderCreateArgs = { ...orderCreateArgs, discountCodeId: discountCode.id, totalAmount: discountedPrice };
+          orderCreateArgs = { ...orderCreateArgs, discountCodeId: discountCode.id, amountAfterDiscount: discountedPrice };
         }
       }
       // disable cart

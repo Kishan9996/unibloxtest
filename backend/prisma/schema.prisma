@@ -75,12 +75,13 @@ model DiscountCode {
 }
 
 model Order {
-  id             String  @id @default(uuid())
-  userId         String
-  user           User    @relation(fields: [userId], references: [id])
-  cartId         String
-  totalAmount    Float
-  discountCodeId String?
+  id                  String  @id @default(uuid())
+  userId              String
+  user                User    @relation(fields: [userId], references: [id])
+  cartId              String
+  totalAmount         Float
+  amountAfterDiscount Float   @default(0.0)
+  discountCodeId      String?
 
   cart         Cart          @relation(fields: [cartId], references: [id])
   discountCode DiscountCode? @relation(fields: [discountCodeId], references: [id])
