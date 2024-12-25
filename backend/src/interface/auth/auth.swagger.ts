@@ -1,7 +1,8 @@
 export const authSwagger = {
-  '/api/v1/auth/admin/login': {
+  '/auth/admin/login': {
     post: {
       summary: 'Admin login',
+      tags: ['Admin'],
       operationId: 'adminLogin',
       requestBody: {
         required: true,
@@ -74,9 +75,11 @@ export const authSwagger = {
       },
     },
   },
-  '/api/v1/auth/login': {
+  '/auth/login': {
     post: {
       summary: 'User login',
+      tags: ['Auth'],
+
       operationId: 'userLogin',
       requestBody: {
         required: true,
@@ -149,9 +152,10 @@ export const authSwagger = {
       },
     },
   },
-  '/api/v1/auth/sign-up': {
+  '/auth/sign-up': {
     post: {
       summary: 'User sign-up',
+      tags: ['Auth'],
       operationId: 'userSignUp',
       requestBody: {
         required: true,

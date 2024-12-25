@@ -19,7 +19,7 @@ export class AdminController extends BaseRouter {
 
   @Route({
     method: 'get',
-    path: '/list',
+    path: '/list-users',
     middlewares: [requireRoleMiddleware([RoleType.ADMIN])],
   })
   async fetchDiscountCode(req: Request, res: Response) {

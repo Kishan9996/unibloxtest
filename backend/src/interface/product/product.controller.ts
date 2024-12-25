@@ -14,7 +14,7 @@ import { requireRoleMiddleware } from '../../infrastructure/middlewares/rollBase
 export class ProductController extends BaseRouter {
   private productServices: ProductServices;
   constructor() {
-    super({ applicationName: ApplicationNames.Product, middlewares: [authenticationMiddleware] });
+    super({ applicationName: ApplicationNames.Product, middlewares: [] });
     this.productServices = new ProductServices();
   }
 
@@ -54,6 +54,7 @@ export class ProductController extends BaseRouter {
     method: 'post',
     path: '/add',
     middlewares: [
+      authenticationMiddleware,
       requireRoleMiddleware([RoleType.ADMIN]),
       zodSchemaValidator({
         schema: schema.productCreateSchema,

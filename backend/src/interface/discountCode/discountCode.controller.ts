@@ -78,7 +78,7 @@ export class DiscountCodeController extends BaseRouter {
 
   @Route({
     method: 'post',
-    path: '/approve/:id',
+    path: '/approve',
     middlewares: [
       requireRoleMiddleware([RoleType.ADMIN]),
       zodSchemaValidator({
