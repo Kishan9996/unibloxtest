@@ -58,10 +58,10 @@ export class CartServices {
   }
 
   public async fetchUserCart(userId: string, cartId: string): Promise<Cart | null> {
-    return await this.cartRepository.findUniqueCart({
+    const cart = await this.cartRepository.findUniqueCart({
       where: {
-        userId,
         id: cartId,
+        userId,
         checkedOut: false,
       },
       select: {
@@ -74,6 +74,7 @@ export class CartServices {
         },
       },
     });
+    return cart;
   }
 
   public async createCartItem(cartId: string, cartData: ProductAddTOCartSchemaType, product: Product) {
@@ -210,7 +211,7 @@ export class CartServices {
   }
 
   public async checkoutCart(checkOutData: CheckOutSchemaType, user: User) {
-    const userCart: any = await this.fetchUserCart(checkOutData.cartId, user.id);
+    const userCart: any = await this.fetchUserCart(user.id, checkOutData.cartId);
     if (userCart) {
       const totalAmount = userCart.items.reduce((acc: any, product: any) => acc + product.price, 0);
       let orderCreateArgs: any = {

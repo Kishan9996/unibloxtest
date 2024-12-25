@@ -131,20 +131,12 @@ export class CartController extends BaseRouter {
   async getCartWithItems(req: Request<{}, {}, ProductAddTOCartSchemaType, {}>, res: Response) {
     try {
       const getCartItems = await this.cartServices.getCartWithItems(req.user);
-      if (getCartItems) {
-        return this.responseHandler.success({
-          res,
-          data: getCartItems,
-          message: this.responseMessages.success.cart_created,
-          statusCode: HttpStatusCodes.STATUS_OK.value,
-        });
-      } else {
-        return this.responseHandler.error({
-          res,
-          message: this.responseMessages.error.cart_create_error,
-          statusCode: HttpStatusCodes.STATUS_BAD_REQUEST.value,
-        });
-      }
+      return this.responseHandler.success({
+        res,
+        data: getCartItems,
+        message: this.responseMessages.success.cart_created,
+        statusCode: HttpStatusCodes.STATUS_OK.value,
+      });
     } catch (error) {
       return this.responseHandler.error({
         res,

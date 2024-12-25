@@ -75,9 +75,7 @@ export class DiscountCodeServices {
   }
   async approveForDiscountCode(data: ApproveDiscountCodeSchemaType) {
     const { userId, id } = data;
-    
     const user = await this.userServices.findUserById(userId);
-    console.log(user);
     const discountCode = await this.discountCodeRepository.findUniqueDiscountCode({
       where: {
         id,
