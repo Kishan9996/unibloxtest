@@ -12,8 +12,8 @@ model User {
   name                     String
   email                    String   @unique
   password                 String
-  isLoggedIn   Boolean @default(false)
-  loginSecrete String?
+  isLoggedIn               Boolean  @default(false)
+  loginSecrete             String?
   discountApplicationCount Int      @default(0)
   role                     String   @default("USER") // String instead of enum
   createdAt                DateTime @default(now()) // Automatically set to the current timestamp on creation
@@ -31,8 +31,7 @@ model Product {
   createdAt DateTime @default(now()) // Automatically set to the current timestamp on creation
   updatedAt DateTime @updatedAt // Automatically updated every time the record is modified
 
-  carts  CartItem[]
-  orders OrderItem[]
+  carts CartItem[]
 }
 
 model Cart {
@@ -43,6 +42,7 @@ model Cart {
 
   user  User       @relation(fields: [userId], references: [id])
   items CartItem[]
+  Order Order[]
 }
 
 model CartItem {
@@ -69,22 +69,14 @@ model DiscountCode {
 }
 
 model Order {
-  id             String        @id @default(uuid())
-  userId         String
-  user           User          @relation(fields: [userId], references: [id])
-  items          OrderItem[]
-  totalAmount    Float
+  id          String @id @default(uuid())
+  userId      String
+  user        User   @relation(fields: [userId], references: [id])
+  cartId      String
+  totalAmount Float
+
+  cart           Cart          @relation(fields: [cartId], references: [id])
   discountCode   DiscountCode? @relation(fields: [discountCodeId], references: [id])
   discountCodeId String?
   createdAt      DateTime      @default(now()) // Automatically set to the current timestamp on creation
-}
-
-model OrderItem {
-  id        String  @id @default(uuid())
-  orderId   String
-  productId String
-  quantity  Int     @default(1)
-  price     Float
-  order     Order   @relation(fields: [orderId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
 }

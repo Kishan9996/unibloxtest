@@ -3,7 +3,8 @@ export enum ApplicationNames {
   Admin = 'admin',
   Authentication = 'auth',
   Product = 'product',
-  Order = 'order'
+  Order = 'order',
+  Cart = 'cart',
 }
 export const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 

@@ -1,3 +1,5 @@
+import { RequestHandler } from "express";
+
 export interface PaginatedResponse<T> {
   data: T[];
   totalRecords: number;
