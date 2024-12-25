@@ -1,7 +1,6 @@
 import { Product } from '@prisma/client';
 import { ProductRepository } from '../../domain/product';
 import { ProductCreateSchemaType } from '../../interface/product/schema';
-import { CommonPaginationRequestOptions, PaginatedResponse } from '../../utils/dto/general';
 import { ProductAddTOCartSchemaType } from '../../interface/cart/schema';
 
 export class ProductServices {
@@ -16,21 +15,11 @@ export class ProductServices {
   }
 
   public async fetchPaginatedProducts(
-    options: CommonPaginationRequestOptions<Product>
-  ): Promise<PaginatedResponse<Product>> {
-    return await this.productRepository.getPaginatedProductList({
-      page: options.page,
-      pageSize: options.pageSize,
-      filter: {
-        where: {
-          name: {
-            contains: options.search,
-          },
-        },
-        select: { id: true, price: true, stock: true, name: true },
-        orderBy: {
-          createdAt: 'desc',
-        },
+  ): Promise<Product[]> {
+    return await this.productRepository.findManyProducts({
+      select: { id: true, price: true, stock: true, name: true },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
   }

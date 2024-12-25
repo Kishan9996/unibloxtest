@@ -7,8 +7,7 @@ import { zodSchemaValidator } from '../../infrastructure/middlewares/schemaMiddl
 import { authenticationMiddleware } from '../../infrastructure/middlewares/authMiddleware';
 import { ProductServices } from '../../application/product/product.services';
 import schema, { ProductCreateSchemaType } from './schema';
-import paginatedSchema from '../../utils/general/schema';
-import { CommonPaginationRequestOptions, RoleType } from '../../utils/dto/general';
+import {  RoleType } from '../../utils/dto/general';
 import { requireRoleMiddleware } from '../../infrastructure/middlewares/rollBasedMiddleware';
 
 export class ProductController extends BaseRouter {
@@ -21,24 +20,15 @@ export class ProductController extends BaseRouter {
   @Route({
     method: 'get',
     path: '/list',
-    middlewares: [
-      zodSchemaValidator({
-        schema: paginatedSchema,
-        validateQuery: true,
-      }),
-    ],
+    middlewares: [],
   })
-  async listProducts(req: Request<{}, {}, {}, CommonPaginationRequestOptions>, res: Response) {
+  async listProducts(req: Request, res: Response) {
     try {
-      const queryParams = req.query;
-      const { data, totalPages, totalRecords, currentPage } =
-        await this.productServices.fetchPaginatedProducts(queryParams);
+      const data = await this.productServices.fetchPaginatedProducts();
       return this.responseHandler.success({
         res,
         data,
         message: this.responseMessages.success.products_fetch_success,
-        paginationDetails: { totalPages, totalRecords, currentPage },
-        paginated: true,
         statusCode: HttpStatusCodes.STATUS_OK.value,
       });
     } catch (error) {
@@ -86,5 +76,4 @@ export class ProductController extends BaseRouter {
       });
     }
   }
-
 }

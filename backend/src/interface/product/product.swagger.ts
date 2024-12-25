@@ -3,56 +3,6 @@ export const productSwaggerSchema = {
     get: {
       summary: 'Get list of products',
       tags: ['Product'],
-      parameters: [
-        {
-          name: 'page',
-          in: 'query',
-          description: 'Page number, must be greater than or equal to 1',
-          required: false,
-          schema: {
-            type: 'integer',
-            minimum: 1,
-          },
-        },
-        {
-          name: 'pageSize',
-          in: 'query',
-          description: 'Number of items per page, must be greater than or equal to 1',
-          required: false,
-          schema: {
-            type: 'integer',
-            minimum: 1,
-          },
-        },
-        {
-          name: 'search',
-          in: 'query',
-          description: 'Search string',
-          required: false,
-          schema: {
-            type: 'string',
-          },
-        },
-        {
-          name: 'orderBy',
-          in: 'query',
-          description: 'Field to order by',
-          required: false,
-          schema: {
-            type: 'string',
-          },
-        },
-        {
-          name: 'order',
-          in: 'query',
-          description: "Order of sorting, 'asc' or 'desc'",
-          required: false,
-          schema: {
-            type: 'string',
-            enum: ['asc', 'desc'],
-          },
-        },
-      ],
       responses: {
         '200': {
           description: 'Successful response',

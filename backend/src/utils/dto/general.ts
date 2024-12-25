@@ -13,17 +13,6 @@ export interface PaginationOptions<T = any> {
   filter?: T;
 }
 
-export interface CommonPaginationRequestOptions<T = any, F extends string = string> {
-  page?: number;
-  pageSize?: number;
-  search?: string;
-  orderBy?: keyof T | any; // Represents a key from the generic type T
-  order?: 'asc' | 'desc';
-  filters?: {
-    [key in F]: string[];
-  };
-}
-
 export interface RouteDefinition {
   method: 'get' | 'post' | 'put' | 'delete' | 'patch';
   path: string;

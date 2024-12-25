@@ -1,6 +1,5 @@
 import { BaseRepository } from '../../database/base.repository';
 import { Prisma, Product } from '@prisma/client';
-import { PaginatedResponse, PaginationOptions } from '../../utils/dto/general';
 
 export class ProductRepository extends BaseRepository {
   constructor() {
@@ -22,11 +21,5 @@ export class ProductRepository extends BaseRepository {
 
   public async findUniqueProduct(args: Prisma.ProductFindUniqueArgs) {
     return await this.prisma.product.findUnique(args);
-  }
-
-  public async getPaginatedProductList(
-    options: PaginationOptions<Prisma.ProductFindManyArgs>
-  ): Promise<PaginatedResponse<Product>> {
-    return await this.getPaginatedQuerySet<Product, Prisma.ProductFindManyArgs>(options);
   }
 }
