@@ -5,6 +5,7 @@ import Header from './components/Header';
 import { AuthProvider } from './components/Auth/Auth';
 import ProductsPage from './components/ProductList';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import AdminLoginPage from './components/Admin/AdminLoginPage';
 
 function App() {
   // Define a Material-UI theme
@@ -44,6 +45,7 @@ function App() {
             {/* Default route redirects to /products */}
             <Route path="/" element={<Navigate to="/products" />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin-login" element={<AdminLoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/products" element={<ProductsPage />} />
           </Routes>

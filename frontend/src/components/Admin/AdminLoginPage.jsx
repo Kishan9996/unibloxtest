@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import LoginForm from '../components/Auth/LoginForm';
 import { Box, Typography } from '@mui/material';
+import AdminLoginForm from './AdminLoginForm';
 
-const LoginPage = () => {
+const AdminLoginPage = () => {
   const navigate = useNavigate();
 
   const handleLoginSuccess = () => {
-    navigate('/');
+    navigate('/admin');
   };
 
   return (
@@ -22,11 +22,11 @@ const LoginPage = () => {
       }}
     >
       <Typography variant="h4" sx={{ marginBottom: 4 }}>
-        Login to Your Account
+        Admin Login
       </Typography>
-      <LoginForm onSuccess={handleLoginSuccess} />
+      <AdminLoginForm onSuccess={handleLoginSuccess} />
     </Box>
   );
 };
 
-export default LoginPage;
+export default AdminLoginPage;
