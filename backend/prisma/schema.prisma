@@ -37,7 +37,7 @@ model Product {
 
 model Cart {
   id         String   @id @default(uuid())
-  userId     String   @unique
+  userId     String 
   checkedOut Boolean  @default(false)
   createdAt  DateTime @default(now()) // Automatically set to the current timestamp on creation
   updatedAt  DateTime @updatedAt // Automatically updated every time the record is modified

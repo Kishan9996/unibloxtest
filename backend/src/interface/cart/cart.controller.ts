@@ -138,6 +138,8 @@ export class CartController extends BaseRouter {
         statusCode: HttpStatusCodes.STATUS_OK.value,
       });
     } catch (error) {
+      console.log(error);
+      
       return this.responseHandler.error({
         res,
         message: this.responseMessages.error.cart_create_error,

@@ -5,6 +5,8 @@ const useCartStore = create((set) => ({
   cart: [],
   cartCount: 0,
   cartId: null,
+  totalAmount:0,
+  setTotalAmount: () => set((state) => ({ totalAmount: state.cart.reduce((total, item) => total + item.price * item.quantity, 0) })),
   cartChangeCount: 0,
   increaseCartChangeCount: () => set((state) => ({ cartChangeCount: state.cartChangeCount + 1 })),
   fetchCart: async () => {

@@ -144,11 +144,11 @@ import {
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useCartStore from '../store/cartStore';
-import { clearCartItemsApi, removeCartItemaApi } from '../services/api/cart';
+import { clearCartItemsApi, placeOrderCheckout, removeCartItemaApi } from '../services/api/cart';
 import { fetchDiscountCodes } from '../services/api/discount';
 
 const CartComponent = () => {
-  const { cart, cartCount, fetchCart, removeItemFromCart, clearCart, cartChangeCount, cartId } = useCartStore();
+  const { cart, cartCount, fetchCart, removeItemFromCart, clearCart, cartChangeCount, cartId,totalAmount,setTotalAmount } = useCartStore();
   const [open, setOpen] = useState(false);
   const [discountDialogOpen, setDiscountDialogOpen] = useState(false);
   const [selectedDiscountCode, setSelectedDiscountCode] = useState('');
@@ -182,7 +182,7 @@ const CartComponent = () => {
   // Handler to remove item from the cart
   const handleRemoveItem = async (cartItemId) => {
     removeItemFromCart(cartItemId);
-    await removeCartItemaApi({ cartItemId });
+    await removeCartItemaApi({ cartItemId,discountCodeId:selectedDiscountCode,totalAmount:0 });
   };
 
   // Handler to clear the entire cart
@@ -196,9 +196,14 @@ const CartComponent = () => {
     handleDiscountDialogOpen(); // Open discount code dialog when checkout is clicked
   };
 
+  const managePlaceOrderFlow = async() => {
+    setTotalAmount();
+    await placeOrderCheckout({ cartId,totalAmount,discountCodeId:selectedDiscountCode });
+    fetchCart();
+  }
   // Handler for placing the order (final step after selecting a discount code)
-  const handlePlaceOrder = () => {
-    alert(`Order placed with discount code: ${selectedDiscountCode}`);
+  const handlePlaceOrder = async() => {
+    await managePlaceOrderFlow();
     handleDiscountDialogClose(); // Close the discount dialog after placing the order
     // Additional logic to process the order can be added here (e.g., API call to place the order)
   };

@@ -33,7 +33,7 @@ export class CartRepository extends BaseRepository {
     });
   }
 
-  public async findUniqueCart(data: Prisma.CartFindUniqueArgs) {
-    return await this.prisma.cart.findUnique(data);
+  public async findUniqueCart(data: Prisma.CartFindFirstArgs) {
+    return await this.prisma.cart.findFirst(data);
   }
 }
