@@ -72,4 +72,63 @@ export class UserServices {
   public async findUserById(id: string): Promise<User | null> {
     return await this.userRepository.findUserById(id);
   }
+
+  public async fetchUserDetailsForAdmin() {
+    const result = await this.userRepository.findManyUser({
+      select: {
+        id: true,
+        name: true,
+        orders: {
+          select: {
+            id: true,
+            totalAmount: true,
+            createdAt: true,
+            discountCode: {
+              select: {
+                id: true,
+                discountValue: true,
+              },
+            },
+            cart: {
+              select: {
+                items: {
+                  select: {
+                    quantity: true,
+                    price: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    if (result?.length) {
+      const data = result.map((user: any) => {
+        let totalItemsPurchased = 0;
+        let totalAmountSpent = 0;
+        let totalDiscount = 0;
+        const discountCodes = new Set<string>();
+        user.orders.forEach((order: any) => {
+          order.cart.items.forEach((item: any) => {
+            totalItemsPurchased += item.quantity;
+            totalAmountSpent += item.quantity * item.price;
+          });
+
+          if (order.discountCode) {
+            totalDiscount += order.discountCode.discountValue;
+            discountCodes.add(order.discountCode.id);
+          }
+        });
+        return {
+          user: { id: user.id, name: user.name },
+          totalItemsPurchased,
+          totalAmountSpent,
+          discountCodes: Array.from(discountCodes),
+          totalDiscount,
+        };
+      });
+      return data;
+    }
+  }
 }

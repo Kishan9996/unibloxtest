@@ -2,6 +2,7 @@ import { DiscountCodeRepository } from '../../domain/discountCode';
 import { DISCOUNT_REP_THRESHOLD } from '../../config';
 import { ApproveDiscountCodeSchemaType } from '../../interface/discountCode/schema';
 import { UserServices } from '../user/user.services';
+import { User } from '@prisma/client';
 
 export class DiscountCodeServices {
   private discountCodeRepository: DiscountCodeRepository;
@@ -12,8 +13,12 @@ export class DiscountCodeServices {
     this.userServices = new UserServices();
   }
 
-  async applyForDiscountCode() {
-    return await this.discountCodeRepository.createDiscountCode({});
+  async applyForDiscountCode(user: any) {
+    return await this.discountCodeRepository.createDiscountCode({
+      data: {
+        userId: user.id,
+      },
+    });
   }
 
   async fetchApprovedAndNotRedeemedDiscountCodeByUser(id: string) {
@@ -33,6 +38,26 @@ export class DiscountCodeServices {
       },
       data: {
         isRedeemed: true,
+      },
+    });
+  }
+
+  async fetchDiscountCodesWithUser() {
+    return await this.discountCodeRepository.findManyDiscountCodes({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      select: {
+        id: true,
+        isRedeemed: true,
+        isApprovedByAdmin: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            discountApplicationCount: true,
+          },
+        },
       },
     });
   }

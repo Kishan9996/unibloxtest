@@ -10,6 +10,10 @@ export class DiscountCodeRepository extends BaseRepository {
     return await this.prisma.discountCode.create(data);
   }
 
+  public async findManyDiscountCodes(data: Prisma.DiscountCodeFindManyArgs) {
+    return await this.prisma.discountCode.findMany(data);
+  }
+
   public async updateDiscountCode(data: Prisma.DiscountCodeUpdateArgs): Promise<DiscountCode | null> {
     return await this.prisma.discountCode.update(data);
   }

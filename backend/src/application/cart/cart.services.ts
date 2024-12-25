@@ -127,6 +127,8 @@ export class CartServices {
         totalAmount,
         cartId: checkOutData.cartId,
       };
+
+      // check for discount code
       if (checkOutData.discountCodeId) {
         const discountCode = await this.discountCodeService.fetchApprovedAndNotRedeemedDiscountCodeByUser(
           checkOutData.discountCodeId

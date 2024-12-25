@@ -4,6 +4,7 @@ import authRouter from './auth/auth.router';
 import productRouter from './product/product.router';
 import cartRouter from './cart/cart.router';
 import discountCodeRouter from './discountCode/discountCode.router';
+import adminRouter from './admin/admin.router';
 
 export class RoutingServicesWithUtils {
   private app: express.Express;
@@ -12,6 +13,7 @@ export class RoutingServicesWithUtils {
     this.app = app;
     // register routes here from each modules
     this.routers = {
+      admin: adminRouter,
       auth: authRouter,
       product: productRouter,
       cart: cartRouter,

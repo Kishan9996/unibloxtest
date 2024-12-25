@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-import readline from "readline";
-import { PasswordService } from "../utils/hashPassword";
+import { PrismaClient } from '@prisma/client';
+import readline from 'readline';
+import { PasswordService } from '../utils/hashPassword';
 
 // Initialize Prisma Client
 const prisma = new PrismaClient();
@@ -23,16 +23,23 @@ async function main() {
   const passwordService = new PasswordService();
   try {
     // Ask for email
-    const email = await askQuestion("Enter your email: ");
+    const email = await askQuestion('Enter your email: ');
     if (!email) {
-      console.error("Email is required.");
+      console.error('Email is required.');
       process.exit(1);
     }
 
     // Ask for password
-    const password = await askQuestion("Enter your password: ");
+    const password = await askQuestion('Enter your password: ');
     if (!password) {
-      console.error("Password is required.");
+      console.error('Password is required.');
+      process.exit(1);
+    }
+
+    // Ask for name
+    const name = await askQuestion('Enter your Name: ');
+    if (!name) {
+      console.error('Name is required.');
       process.exit(1);
     }
 
@@ -40,16 +47,16 @@ async function main() {
     // Create a new user instance in the database
     const newUser = await prisma.user.create({
       data: {
-        name:"admin",
+        name: name,
         email: email,
         password: hashedPassword,
-        role:"ADMIN"
+        role: 'ADMIN',
       },
     });
 
-    console.log("User created successfully:", newUser);
+    console.log('User created successfully:', newUser);
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error('Error creating user:', error);
   } finally {
     rl.close();
     await prisma.$disconnect();

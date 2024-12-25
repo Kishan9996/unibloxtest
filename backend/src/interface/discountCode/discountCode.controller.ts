@@ -23,11 +23,41 @@ export class DiscountCodeController extends BaseRouter {
   })
   async applyForDiscountCode(req: Request, res: Response) {
     try {
-      const applyForDiscount = await this.discountCodeServices.applyForDiscountCode();
+      const applyForDiscount = await this.discountCodeServices.applyForDiscountCode(req.user);
       if (applyForDiscount) {
         return this.responseHandler.success({
           res,
           data: {},
+          message: this.responseMessages.success.discountCode_created,
+          statusCode: HttpStatusCodes.STATUS_OK.value,
+        });
+      } else {
+        return this.responseHandler.error({
+          res,
+          message: this.responseMessages.error.discountCode_create_error,
+          statusCode: HttpStatusCodes.STATUS_BAD_REQUEST.value,
+        });
+      }
+    } catch (error) {
+      return this.responseHandler.error({
+        res,
+        message: this.responseMessages.error.discountCode_create_error,
+      });
+    }
+  }
+
+  @Route({
+    method: 'get',
+    path: '/list',
+    middlewares: [requireRoleMiddleware([RoleType.ADMIN])],
+  })
+  async fetchDiscountCode(req: Request, res: Response) {
+    try {
+      const fetchDiscountCodes = await this.discountCodeServices.fetchDiscountCodesWithUser();
+      if (fetchDiscountCodes) {
+        return this.responseHandler.success({
+          res,
+          data: fetchDiscountCodes,
           message: this.responseMessages.success.discountCode_created,
           statusCode: HttpStatusCodes.STATUS_OK.value,
         });

@@ -14,6 +14,9 @@ export class UserRepository extends BaseRepository {
   async findUniqueUser(props: Prisma.UserFindUniqueArgs): Promise<User | null> {
     return this.prisma.user.findUnique(props);
   }
+  async findManyUser(props: Prisma.UserFindManyArgs): Promise<User[] | null> {
+    return this.prisma.user.findMany(props);
+  }
 
   public async compareUserPassword(password: string, hashedPassword: string): Promise<boolean> {
     return await this.passwordService.comparePassword(password, hashedPassword);
