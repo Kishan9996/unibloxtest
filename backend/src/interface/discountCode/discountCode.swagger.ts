@@ -40,28 +40,6 @@ export const discountSwaggerSchema = {
     get: {
       summary: 'Get list of items or discounts',
       tags: ['Discount'],
-      parameters: [
-        {
-          name: 'page',
-          in: 'query',
-          description: 'Page number, must be greater than or equal to 1',
-          required: false,
-          schema: {
-            type: 'integer',
-            minimum: 1,
-          },
-        },
-        {
-          name: 'pageSize',
-          in: 'query',
-          description: 'Number of items per page, must be greater than or equal to 1',
-          required: false,
-          schema: {
-            type: 'integer',
-            minimum: 1,
-          },
-        },
-      ],
       responses: {
         '200': {
           description: 'Successful response',

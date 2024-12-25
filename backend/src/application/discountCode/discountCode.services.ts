@@ -3,6 +3,7 @@ import { DISCOUNT_REP_THRESHOLD } from '../../config';
 import { ApproveDiscountCodeSchemaType } from '../../interface/discountCode/schema';
 import { UserServices } from '../user/user.services';
 import { User } from '@prisma/client';
+import { RoleType } from '../../utils/dto/general';
 
 export class DiscountCodeServices {
   private discountCodeRepository: DiscountCodeRepository;
@@ -42,8 +43,9 @@ export class DiscountCodeServices {
     });
   }
 
-  async fetchDiscountCodesWithUser() {
+  async fetchDiscountCodesWithUser(whereClaus: Record<any, any>) {
     return await this.discountCodeRepository.findManyDiscountCodes({
+      where: whereClaus,
       orderBy: {
         createdAt: 'desc',
       },
@@ -61,9 +63,21 @@ export class DiscountCodeServices {
       },
     });
   }
+
+  async fetchDiscountCodesWithUserForAdmin() {
+    return await this.fetchDiscountCodesWithUser({});
+  }
+  async fetchDiscountCodesWithUsersForUser(user: any) {
+    return await this.fetchDiscountCodesWithUser({
+      userId: user.id,
+      isRedeemed: false,
+    });
+  }
   async approveForDiscountCode(data: ApproveDiscountCodeSchemaType) {
     const { userId, id } = data;
+    
     const user = await this.userServices.findUserById(userId);
+    console.log(user);
     const discountCode = await this.discountCodeRepository.findUniqueDiscountCode({
       where: {
         id,

@@ -18,11 +18,17 @@ export class CartRepository extends BaseRepository {
   public async updateCart(data: Prisma.CartUpdateArgs): Promise<Cart | null> {
     return await this.prisma.cart.update(data);
   }
-  public async findCartByUserId(userId: string): Promise<Cart | null> {
+  public async findCartByUserId(userId: string) {
     return await this.prisma.cart.findFirst({
       where: {
         userId,
         checkedOut: false,
+      },
+      select: {
+        items: true,
+        id: true,
+        checkedOut: true,
+        userId: true,
       },
     });
   }

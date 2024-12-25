@@ -46,13 +46,14 @@ export class ProductServices {
   }
 
   public async checkProductsAndQuantityAvailable(productData: ProductAddTOCartSchemaType) {
-    const productConditions = productData.map((item) => ({
-      id: item.productId,
-      quantity: { gte: item.quantity },
-    }));
-    const availableProducts = await this.productRepository.findManyProducts({
+    const availableProducts = await this.productRepository.findUniqueProduct({
       where: {
-        OR: productConditions,
+        id: productData.productId,
+      },
+      select: {
+        id: true,
+        stock: true,
+        price: true,
       },
     });
     return availableProducts;

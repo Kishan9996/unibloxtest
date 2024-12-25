@@ -33,5 +33,8 @@ export const response = {
       user_un_authorized: {
         en: 'User is unauthorized',
       },
+      user_not_created: {
+        en: 'User not created',
+      },
     },
   };

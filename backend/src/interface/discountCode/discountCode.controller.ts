@@ -49,11 +49,12 @@ export class DiscountCodeController extends BaseRouter {
   @Route({
     method: 'get',
     path: '/list',
-    middlewares: [requireRoleMiddleware([RoleType.ADMIN])],
+    middlewares: [],
   })
   async fetchDiscountCode(req: Request, res: Response) {
     try {
-      const fetchDiscountCodes = await this.discountCodeServices.fetchDiscountCodesWithUser();
+      const user: any = req.user;
+      const fetchDiscountCodes = await this.discountCodeServices.fetchDiscountCodesWithUsersForUser(user);
       if (fetchDiscountCodes) {
         return this.responseHandler.success({
           res,

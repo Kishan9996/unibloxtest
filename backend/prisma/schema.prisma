@@ -49,7 +49,7 @@ model Cart {
 
 model CartItem {
   id        String   @id @default(uuid())
-  cartId    String
+  cartId    String @unique
   productId String
   price     Float
   quantity  Int      @default(1)

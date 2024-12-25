@@ -130,8 +130,8 @@ export class AuthController extends BaseRouter {
     } catch (error) {
       return this.responseHandler.error({
         res: response,
-        message: this.responseMessages.error.user_un_authorized,
-        statusCode: HttpStatusCodes.STATUS_UNAUTHORIZED.value,
+        message: this.responseMessages.error.user_not_created,
+        statusCode: HttpStatusCodes.STATUS_BAD_REQUEST.value,
       });
     }
   }

@@ -62,4 +62,44 @@ export const adminSwaggerSchema = {
       },
     },
   },
+  '/admin/discount/list': {
+    get: {
+      summary: 'Get list of items or discounts',
+      tags: ['Admin'],
+      responses: {
+        '200': {
+          description: 'Successful response',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  data: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        id: {
+                          type: 'string',
+                        },
+                        name: {
+                          type: 'string',
+                        },
+                        description: {
+                          type: 'string',
+                        },
+                      },
+                    },
+                  },
+                  total: {
+                    type: 'integer',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 };

@@ -20,6 +20,10 @@ export class ProductRepository extends BaseRepository {
     return await this.prisma.product.findMany(args);
   }
 
+  public async findUniqueProduct(args: Prisma.ProductFindUniqueArgs) {
+    return await this.prisma.product.findUnique(args);
+  }
+
   public async getPaginatedProductList(
     options: PaginationOptions<Prisma.ProductFindManyArgs>
   ): Promise<PaginatedResponse<Product>> {

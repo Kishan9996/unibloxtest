@@ -5,7 +5,19 @@ export class CartItemRepository extends BaseRepository {
     super(Prisma.ModelName.CartItem);
   }
 
-  public async createManyCartItem(data: Prisma.CartItemCreateManyArgs): Promise<Prisma.BatchPayload> {
-    return await this.prisma.cartItem.createMany(data);
+  public async createCartItem(data: Prisma.CartItemCreateArgs) {
+    return await this.prisma.cartItem.create(data);
+  }
+
+  public async deleteCartItem(data: Prisma.CartItemDeleteArgs) {
+    return await this.prisma.cartItem.delete(data);
+  }
+
+  public async findUniqueCartItem(data: Prisma.CartItemFindUniqueArgs) {
+    return await this.prisma.cartItem.findUnique(data);
+  }
+
+  public async updateCartItem(data: Prisma.CartItemUpdateArgs) {
+    return await this.prisma.cartItem.update(data);
   }
 }

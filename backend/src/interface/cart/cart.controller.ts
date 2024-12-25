@@ -4,7 +4,12 @@ import { Route } from '../../infrastructure/decorators/routingDecorators';
 import { BaseRouter } from '../../infrastructure/base/baseRouterWithController';
 import { zodSchemaValidator } from '../../infrastructure/middlewares/schemaMiddleware';
 import { authenticationMiddleware } from '../../infrastructure/middlewares/authMiddleware';
-import schema, { CheckOutSchemaType, ProductAddTOCartSchemaType } from './schema';
+import schema, {
+  CheckOutSchemaType,
+  ProductAddTOCartSchemaType,
+  ProductRemoveTOCartSchemaType,
+  UpdateCartItemSchemaType,
+} from './schema';
 import { CartServices } from '../../application/cart';
 
 export class CartController extends BaseRouter {
@@ -26,11 +31,110 @@ export class CartController extends BaseRouter {
   })
   async addToCart(req: Request<{}, {}, ProductAddTOCartSchemaType, {}>, res: Response) {
     try {
-      const createdCartItems = await this.cartServices.addToCart(req.body, req.user);
-      if (createdCartItems) {
+      const createdCartItem = await this.cartServices.addToCart(req.body, req.user);
+      if (createdCartItem) {
         return this.responseHandler.success({
           res,
           data: {},
+          message: this.responseMessages.success.cart_created,
+          statusCode: HttpStatusCodes.STATUS_OK.value,
+        });
+      } else {
+        return this.responseHandler.error({
+          res,
+          message: this.responseMessages.error.cart_create_error,
+          statusCode: HttpStatusCodes.STATUS_BAD_REQUEST.value,
+        });
+      }
+    } catch (error) {
+      return this.responseHandler.error({
+        res,
+        message: this.responseMessages.error.cart_create_error,
+      });
+    }
+  }
+
+  @Route({
+    method: 'post',
+    path: '/remove-item',
+    middlewares: [
+      zodSchemaValidator({
+        schema: schema.productRemoveTOCartSchema,
+        validateQuery: false,
+      }),
+    ],
+  })
+  async removeToCart(req: Request<{}, {}, ProductRemoveTOCartSchemaType, {}>, res: Response) {
+    try {
+      const removedCartItem = await this.cartServices.removeToCart(req.body, req.user);
+      if (removedCartItem) {
+        return this.responseHandler.success({
+          res,
+          data: {},
+          message: this.responseMessages.success.cart_created,
+          statusCode: HttpStatusCodes.STATUS_OK.value,
+        });
+      } else {
+        return this.responseHandler.error({
+          res,
+          message: this.responseMessages.error.cart_create_error,
+          statusCode: HttpStatusCodes.STATUS_BAD_REQUEST.value,
+        });
+      }
+    } catch (error) {
+      return this.responseHandler.error({
+        res,
+        message: this.responseMessages.error.cart_create_error,
+      });
+    }
+  }
+
+  @Route({
+    method: 'patch',
+    path: '/update-quantity',
+    middlewares: [
+      zodSchemaValidator({
+        schema: schema.updateCartItemSchema,
+        validateQuery: false,
+      }),
+    ],
+  })
+  async updateQuantity(req: Request<{}, {}, UpdateCartItemSchemaType, {}>, res: Response) {
+    try {
+      const updatedCartItem = await this.cartServices.updateQuantityToCartItem(req.body, req.user);
+      if (updatedCartItem) {
+        return this.responseHandler.success({
+          res,
+          data: {},
+          message: this.responseMessages.success.cart_created,
+          statusCode: HttpStatusCodes.STATUS_OK.value,
+        });
+      } else {
+        return this.responseHandler.error({
+          res,
+          message: this.responseMessages.error.cart_create_error,
+          statusCode: HttpStatusCodes.STATUS_BAD_REQUEST.value,
+        });
+      }
+    } catch (error) {
+      return this.responseHandler.error({
+        res,
+        message: this.responseMessages.error.cart_create_error,
+      });
+    }
+  }
+  @Route({
+    method: 'get',
+    path: '/cart-items',
+    middlewares: [],
+  })
+  async getCartWithItems(req: Request<{}, {}, ProductAddTOCartSchemaType, {}>, res: Response) {
+    try {
+      const getCartItems = await this.cartServices.getCartWithItems(req.user);
+      if (getCartItems) {
+        return this.responseHandler.success({
+          res,
+          data: getCartItems,
           message: this.responseMessages.success.cart_created,
           statusCode: HttpStatusCodes.STATUS_OK.value,
         });

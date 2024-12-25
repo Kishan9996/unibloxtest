@@ -53,6 +53,54 @@ export const cartSwaggerSchema = {
       },
     },
   },
+  '/cart/cart-items': {
+    get: {
+      summary: 'Retrieve cart items',
+      tags: ['Cart'],
+      description: 'Fetches a list of items in the cart.',
+      responses: {
+        '200': {
+          description: 'Successful response',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string',
+                      description: 'Unique identifier for the cart item',
+                    },
+                    name: {
+                      type: 'string',
+                      description: 'Name of the cart item',
+                    },
+                    quantity: {
+                      type: 'integer',
+                      description: 'Quantity of the item in the cart',
+                    },
+                    price: {
+                      type: 'number',
+                      format: 'float',
+                      description: 'Price of the item',
+                    },
+                  },
+                  required: ['id', 'name', 'quantity', 'price'],
+                },
+              },
+            },
+          },
+        },
+        '400': {
+          description: 'Bad request',
+        },
+        '500': {
+          description: 'Internal server error',
+        },
+      },
+    },
+  },
   '/cart/checkout': {
     post: {
       summary: 'Checkout the cart',
@@ -113,6 +161,111 @@ export const cartSwaggerSchema = {
         },
         '400': {
           description: 'Invalid request body',
+        },
+      },
+    },
+  },
+  '/cart/remove-item': {
+    post: {
+      summary: 'Remove a cart item',
+      tags: ['Cart'],
+
+      description: 'Removes an item from the cart.',
+      requestBody: {
+        required: true,
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                cartItemId: {
+                  type: 'string',
+                  description: 'The ID of the cart item to remove',
+                  minLength: 1,
+                },
+              },
+              required: ['cartItemId'],
+            },
+          },
+        },
+      },
+      responses: {
+        '200': {
+          description: 'Item successfully removed',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  message: {
+                    type: 'string',
+                    description: 'Confirmation message',
+                  },
+                },
+              },
+            },
+          },
+        },
+        '400': {
+          description: 'Invalid request payload',
+        },
+        '500': {
+          description: 'Internal server error',
+        },
+      },
+    },
+  },
+  '/cart/update-quantity': {
+    patch: {
+      summary: 'Update cart item quantity',
+      tags: ['Cart'],
+
+      description: 'Updates the quantity of an item in the cart.',
+      requestBody: {
+        required: true,
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                cartItemId: {
+                  type: 'string',
+                  description: 'The ID of the cart item',
+                  minLength: 1,
+                },
+                quantity: {
+                  type: 'number',
+                  description: 'The new quantity for the cart item',
+                  minimum: 1,
+                },
+              },
+              required: ['cartItemId', 'quantity'],
+            },
+          },
+        },
+      },
+      responses: {
+        '200': {
+          description: 'Quantity successfully updated',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  message: {
+                    type: 'string',
+                    description: 'Confirmation message',
+                  },
+                },
+              },
+            },
+          },
+        },
+        '400': {
+          description: 'Invalid request payload',
+        },
+        '500': {
+          description: 'Internal server error',
         },
       },
     },
