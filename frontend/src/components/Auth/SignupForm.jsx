@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TextField, Button, Box, Typography } from '@mui/material';
 import { signup } from '../../services/api/auth';
 
 const SignupForm = ({ onSuccess }) => {
@@ -42,33 +43,63 @@ const SignupForm = ({ onSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        maxWidth: 400,
+        margin: '0 auto',
+        padding: 2,
+        borderRadius: 1,
+        boxShadow: 3,
+        bgcolor: 'background.paper',
+      }}
+    >
+      <Typography variant="h6" sx={{ marginBottom: 2 }}>
+        Sign Up
+      </Typography>
+      <TextField
+        label="Email"
         type="email"
-        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        fullWidth
         required
+        sx={{ marginBottom: 2 }}
       />
-      <input
+      <TextField
+        label="Name"
         type="text"
-        placeholder="Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        fullWidth
         required
+        sx={{ marginBottom: 2 }}
       />
-      <input
+      <TextField
+        label="Password"
         type="password"
-        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        fullWidth
         required
+        sx={{ marginBottom: 2 }}
       />
-      {error && <p>{error}</p>}
-      <button type="submit" disabled={loading}>
+      {error && <Typography color="error" sx={{ marginBottom: 2 }}>{error}</Typography>}
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        disabled={loading}
+        sx={{ padding: 1 }}
+      >
         {loading ? 'Signing Up...' : 'Sign Up'}
-      </button>
-    </form>
+      </Button>
+    </Box>
   );
 };
 

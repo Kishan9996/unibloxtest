@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import SignupForm from '../components/Auth/SignupForm';
+import { Box, Typography } from '@mui/material';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -9,10 +10,22 @@ const SignupPage = () => {
   };
 
   return (
-    <div>
-      <h2>Sign Up</h2>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        bgcolor: 'background.default',
+        padding: 2,
+      }}
+    >
+      <Typography variant="h4" sx={{ marginBottom: 4 }}>
+        Create Your Account
+      </Typography>
       <SignupForm onSuccess={handleSignupSuccess} />
-    </div>
+    </Box>
   );
 };
 
