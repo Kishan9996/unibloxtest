@@ -26,6 +26,16 @@ export class DiscountCodeServices {
     });
   }
 
+  async redeemDiscountCode(id: string) {
+    return await this.discountCodeRepository.updateDiscountCode({
+      where: {
+        id,
+      },
+      data: {
+        isRedeemed: true,
+      },
+    });
+  }
   async approveForDiscountCode(data: ApproveDiscountCodeSchemaType) {
     const { userId, id } = data;
     const user = await this.userServices.findUserById(userId);

@@ -62,7 +62,7 @@ export class CartController extends BaseRouter {
   async checkOut(req: Request<{}, {}, CheckOutSchemaType, {}>, res: Response) {
     try {
       const user: any = req.user;
-      const checkout = await this.cartServices.checkoutCart(req.body, user.id);
+      const checkout = await this.cartServices.checkoutCart(req.body, user);
       if (checkout) {
         return this.responseHandler.success({
           res,

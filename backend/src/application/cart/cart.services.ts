@@ -1,10 +1,12 @@
-import { Cart, Product } from '@prisma/client';
+import { Cart, Product, User } from '@prisma/client';
 import { CartRepository } from '../../domain/cart';
 import { CheckOutSchemaType, ProductAddTOCartSchemaType } from '../../interface/cart/schema';
 import { ProductServices } from '../product';
 import { CartItemRepository } from '../../domain/cartItem';
 import { OrderRepository } from '../../domain/order';
 import { DiscountCodeServices } from '../discountCode';
+import { UserServices } from '../user';
+import { DISCOUNT_REP_THRESHOLD } from '../../config';
 
 interface ProductInfo {
   productId: string;
@@ -17,6 +19,8 @@ export class CartServices {
   private orderRepository: OrderRepository;
 
   private productService: ProductServices;
+  private userService: UserServices;
+
   private discountCodeService: DiscountCodeServices;
 
   constructor() {
@@ -25,6 +29,8 @@ export class CartServices {
     this.orderRepository = new OrderRepository();
 
     this.productService = new ProductServices();
+    this.userService = new UserServices();
+
     this.discountCodeService = new DiscountCodeServices();
   }
 
@@ -105,12 +111,19 @@ export class CartServices {
       },
     });
   }
-  public async checkoutCart(checkOutData: CheckOutSchemaType, userId: string) {
-    const userCart: any = await this.fetchUserCart(checkOutData.cartId, userId);
+
+  applyDiscount(totalPrice: number, discountPercentage: number): number {
+    const discountAmount = totalPrice * (discountPercentage / 100);
+    const discountedPrice = totalPrice - discountAmount;
+    return discountedPrice;
+  }
+
+  public async checkoutCart(checkOutData: CheckOutSchemaType, user: User) {
+    const userCart: any = await this.fetchUserCart(checkOutData.cartId, user.id);
     if (userCart) {
       const totalAmount = userCart.items.reduce((acc: any, product: any) => acc + product.price, 0);
       let orderCreateArgs: any = {
-        userId,
+        userId: user.id,
         totalAmount,
         cartId: checkOutData.cartId,
       };
@@ -119,11 +132,30 @@ export class CartServices {
           checkOutData.discountCodeId
         );
         if (discountCode) {
-          orderCreateArgs = { ...orderCreateArgs, discountCodeId: discountCode.id };
+          // create discounted price
+          const discountedPrice = this.applyDiscount(totalAmount, discountCode.discountValue);
+          // redeem discount code
+          await this.discountCodeService.redeemDiscountCode(discountCode.id);
+          orderCreateArgs = { ...orderCreateArgs, discountCodeId: discountCode.id, totalAmount: discountedPrice };
         }
       }
       // disable cart
       await this.checkOutCartOfUser(checkOutData.cartId);
+
+      // update  discount applicable count by comparing the previous count matches with threshold otherwise reset
+      const discountApplicationCount =
+        user.discountApplicationCount === DISCOUNT_REP_THRESHOLD ? 0 : user.discountApplicationCount + 1;
+
+      await this.userService.updateUserDetails({
+        where: {
+          id: user.id,
+        },
+        data: {
+          discountApplicationCount,
+        },
+      });
+
+      // create order
       return await this.orderRepository.createOrder({
         data: orderCreateArgs,
       });
