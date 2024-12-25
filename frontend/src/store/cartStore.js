@@ -4,29 +4,31 @@ import { fetchCartItems } from '../services/api/cart';
 const useCartStore = create((set) => ({
   cart: [],
   cartCount: 0,
+  cartId: null,
+  cartChangeCount: 0,
+  increaseCartChangeCount: () => set((state) => ({ cartChangeCount: state.cartChangeCount + 1 })),
   fetchCart: async () => {
     try {
       const response = await fetchCartItems();
       const { data } = response.data;
-
       if (data) {
         const formattedCart = data.items.map((item) => ({
-          cartItemId: item.cartItemId,
+          cartId: data.id,
+          cartItemId: item.id,
           price: item.price,
           quantity: item.quantity,
           product: item.product,
         }));
 
-        set({ cart: formattedCart });
-        set({ cartCount: data.items.length }); // Update cart count
+        set({ cart: formattedCart, cartCount: data.items.length,cartId: data.id }); // Update both cart and count
       }
     } catch (error) {
       console.error('Failed to fetch cart items:', error);
     }
   },
-  setCartCount: (count) => set({ cartCount: count }), // New method to set cart count
-  addToCart: (product) =>
+  addToCart: (product, quantity) =>
     set((state) => {
+      // Assuming adding the item to the cart or updating the quantity
       const existingProduct = state.cart.find(
         (item) => item.product.id === product.id
       );
@@ -34,20 +36,30 @@ const useCartStore = create((set) => ({
         return {
           cart: state.cart.map((item) =>
             item.product.id === product.id
-              ? { ...item, quantity: item.quantity + 1 }
+              ? { ...item, quantity: item.quantity + quantity }
               : item
           ),
-          cartCount: state.cartCount, // Maintain cart count as is
+          cartCount: state.cart.filter((item) => item.product.id === product.id).length,
         };
       }
       return {
         cart: [
           ...state.cart,
-          { cartItemId: null, price: product.price, quantity: 1, product },
+          { cartItemId: null, price: product.price, quantity, product },
         ],
-        cartCount: state.cartCount + 1, // Increment cart count for new item
+        cartCount: state.cart.length + 1, // Increment cartCount when adding new item
+      };
+    }),
+  // Remove item from cart
+  removeItemFromCart: (cartItemId) =>
+    set((state) => {
+      const updatedCart = state.cart.filter((item) => item.cartItemId !== cartItemId);
+      return {
+        cart: updatedCart,
+        cartCount: updatedCart.length, // Update the cartCount
       };
     }),
   clearCart: () => set({ cart: [], cartCount: 0 }),
 }));
+
 export default useCartStore;

@@ -12,9 +12,12 @@ export class CartItemRepository extends BaseRepository {
   public async deleteCartItem(data: Prisma.CartItemDeleteArgs) {
     return await this.prisma.cartItem.delete(data);
   }
+  public async deleteManyCartItems(data: Prisma.CartItemDeleteManyArgs) {
+    return await this.prisma.cartItem.deleteMany(data);
+  }
 
-  public async findUniqueCartItem(data: Prisma.CartItemFindUniqueArgs) {
-    return await this.prisma.cartItem.findUnique(data);
+  public async findUniqueCartItem(data: Prisma.CartItemFindFirstArgs) {
+    return await this.prisma.cartItem.findFirst(data);
   }
 
   public async updateCartItem(data: Prisma.CartItemUpdateArgs) {

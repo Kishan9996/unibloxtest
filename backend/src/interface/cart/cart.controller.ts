@@ -180,4 +180,37 @@ export class CartController extends BaseRouter {
       });
     }
   }
+
+  @Route({
+    method: 'get',
+    path: '/clear-cart/:id',
+    middlewares: [
+
+    ],
+  })
+  async clearCart(req: Request, res: Response) {
+    try {
+      const user: any = req.user;
+      const clear = await this.cartServices.clearCartItems(req.params.id, user.id);
+      if (clear) {
+        return this.responseHandler.success({
+          res,
+          data: {},
+          message: this.responseMessages.success.cart_created,
+          statusCode: HttpStatusCodes.STATUS_OK.value,
+        });
+      } else {
+        return this.responseHandler.error({
+          res,
+          message: this.responseMessages.error.cart_create_error,
+          statusCode: HttpStatusCodes.STATUS_BAD_REQUEST.value,
+        });
+      }
+    } catch (error) {
+      return this.responseHandler.error({
+        res,
+        message: this.responseMessages.error.cart_create_error,
+      });
+    }
+  }
 }

@@ -4,7 +4,6 @@ export const AuthContext = React.createContext(undefined);
 
 export const AuthProvider = ({ children }) => {
   const user = localStorage.getItem("user") || '{}';
-  console.log(user);
   const localStorageUser = JSON.parse(user);
   const [currentUser, setCurrentUser] = useState(localStorageUser);
 

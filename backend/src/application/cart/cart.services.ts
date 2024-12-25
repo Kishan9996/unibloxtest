@@ -262,4 +262,16 @@ export class CartServices {
     }
     return null;
   }
+
+  async clearCartItems(cartId: string,userId: string) {
+    const userCart: any = await this.fetchUserCart(userId, cartId);
+    if(!userCart){
+      return null;
+    }
+    return await this.cartItemRepository.deleteManyCartItems({
+      where: {
+        cartId,
+      },
+    });
+  }
 }

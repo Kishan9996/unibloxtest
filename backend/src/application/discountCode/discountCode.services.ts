@@ -4,6 +4,7 @@ import { ApproveDiscountCodeSchemaType } from '../../interface/discountCode/sche
 import { UserServices } from '../user/user.services';
 import { User } from '@prisma/client';
 import { RoleType } from '../../utils/dto/general';
+import { isA } from 'jest-mock-extended';
 
 export class DiscountCodeServices {
   private discountCodeRepository: DiscountCodeRepository;
@@ -71,6 +72,7 @@ export class DiscountCodeServices {
     return await this.fetchDiscountCodesWithUser({
       userId: user.id,
       isRedeemed: false,
+      isApprovedByAdmin: true,
     });
   }
   async approveForDiscountCode(data: ApproveDiscountCodeSchemaType) {
