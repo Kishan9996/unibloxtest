@@ -2,14 +2,20 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import Header from './components/Header';
-import { AuthProvider } from './components/Auth/Auth';
 import ProductsPage from './components/ProductList';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AdminLoginPage from './components/Admin/AdminLoginPage';
 import NotificationSnackbar from './components/NotificationSnackbar';
 import AdminHome from './pages/AdminHomePage';
+import ProtectedAdminRoute from './Routes/ProtectedAdminRoute';
+import useAuthStore from './store/authStore';
+import { useEffect } from 'react';
 
 function App() {
+  const { currentUser } = useAuthStore();
+  useEffect(()=>{
+
+  },[currentUser])
   // Define a Material-UI theme
   const theme = createTheme({
     palette: {
@@ -38,7 +44,6 @@ function App() {
     },
   });
   return (
-    <AuthProvider>
       <ThemeProvider theme={theme}>
         {/* Global Snackbar */}
         <NotificationSnackbar />
@@ -52,10 +57,16 @@ function App() {
             <Route path="/admin" element={<AdminHome />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/products" element={<ProductsPage />} />
+            {/* Protected Admin routes */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedAdminRoute element={<AdminHome />} />
+              }
+            />
           </Routes>
         </Router>
       </ThemeProvider>
-    </AuthProvider>
   );
 }
 

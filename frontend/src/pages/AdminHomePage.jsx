@@ -3,6 +3,7 @@ import {
     Typography,
 } from '@mui/material';
 import AdminDiscountList from '../components/Admin/AdminDiscountList';
+import AdminUserList from '../components/Admin/AdminUserSummeryList';
 
 const AdminHome = () => {
     return (
@@ -11,6 +12,7 @@ const AdminHome = () => {
                 Admin Dashboard
             </Typography>
             <AdminDiscountList />
+            <AdminUserList />
         </Box>
     );
 };

@@ -12,12 +12,21 @@ import { OrderRepository } from '../../domain/order';
 import { DiscountCodeServices } from '../discountCode';
 import { UserServices } from '../user';
 import { DISCOUNT_REP_THRESHOLD } from '../../config';
+type StockItem = {
+  id: string;
+  stock: number;
+};
 
-interface ProductInfo {
+type ProductItem = {
   productId: string;
   quantity: number;
-  price: number;
-}
+};
+
+export type UpdatedStockItem = {
+  id: string;
+  stock: number;
+};
+
 export class CartServices {
   private cartRepository: CartRepository;
   private cartItemRepository: CartItemRepository;
@@ -57,6 +66,24 @@ export class CartServices {
     });
   }
 
+  public updateStock(stockArray: StockItem[], productArray: ProductItem[]): UpdatedStockItem[] {
+    return stockArray.map((stockItem) => {
+      // Find the matching product for the current stock item
+      const product = productArray.find((p) => p.productId === stockItem.id);
+
+      if (product) {
+        // Subtract quantity from stock if a match is found
+        const updatedStock: UpdatedStockItem = {
+          id: stockItem.id,
+          stock: stockItem.stock - product.quantity,
+        };
+        return updatedStock;
+      } else {
+        // No matching productId, return the original stock item
+        return { id: stockItem.id, stock: stockItem.stock };
+      }
+    });
+  }
   public async fetchUserCart(userId: string, cartId: string): Promise<Cart | null> {
     const cart = await this.cartRepository.findUniqueCart({
       where: {
@@ -70,6 +97,8 @@ export class CartServices {
         items: {
           select: {
             price: true,
+            quantity: true,
+            productId: true,
           },
         },
       },
@@ -254,7 +283,12 @@ export class CartServices {
       });
 
       // update quantities of each products which are in cart
+      const existingProductsQuantities: any = await this.productService.findProductsById(
+        userCart.items.map((item: any) => item.productId)
+      );
 
+      const updatedStocks = this.updateStock(existingProductsQuantities, userCart.items);
+      await this.productService.updateQuantitiesOfProductsById(updatedStocks);
       // create order
       return await this.orderRepository.createOrder({
         data: orderCreateArgs,
@@ -263,9 +297,9 @@ export class CartServices {
     return null;
   }
 
-  async clearCartItems(cartId: string,userId: string) {
+  async clearCartItems(cartId: string, userId: string) {
     const userCart: any = await this.fetchUserCart(userId, cartId);
-    if(!userCart){
+    if (!userCart) {
       return null;
     }
     return await this.cartItemRepository.deleteManyCartItems({

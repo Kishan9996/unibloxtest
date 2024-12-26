@@ -22,7 +22,7 @@ const LoginPage = () => {
       }}
     >
       <Typography variant="h4" sx={{ marginBottom: 4 }}>
-        Login to Your Account
+        Login to User Account
       </Typography>
       <LoginForm onSuccess={handleLoginSuccess} />
     </Box>

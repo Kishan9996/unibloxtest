@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { fetchCartItems } from "../services/api/cart";
 import { fetchDiscountCodes } from "../services/api/discount";
 
-const useCartStore = create((set) => ({
+const useCartStore = create((set,get) => ({
   cart: [],
   cartCount: 0,
   cartId: null,
@@ -35,6 +35,10 @@ const useCartStore = create((set) => ({
           cart: formattedCart,
           cartCount: data.items.length,
           cartId: data.id,
+          totalAmount: formattedCart.reduce(
+            (total, item) => total + item.price * item.quantity,
+            0
+          ),
         }); // Update both cart and count
       }
     } catch (error) {

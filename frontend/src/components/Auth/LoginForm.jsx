@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Box, Typography } from '@mui/material';
 import { login } from '../../services/api/auth';
+import useAuthStore from '../../store/authStore';
 
 const LoginForm = ({ onSuccess }) => {
   const [email, setEmail] = useState('');
@@ -9,7 +10,7 @@ const LoginForm = ({ onSuccess }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // Use useNavigate to redirect the user
-
+  const { setCurrentUser } = useAuthStore();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -25,6 +26,7 @@ const LoginForm = ({ onSuccess }) => {
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
+      setCurrentUser(user)
 
       // Call the onSuccess callback and redirect to the products page
       onSuccess();
@@ -52,9 +54,6 @@ const LoginForm = ({ onSuccess }) => {
         bgcolor: 'background.paper', // Background for the form box
       }}
     >
-      <Typography variant="h6" sx={{ marginBottom: 2 }}>
-        Log In
-      </Typography>
       <TextField
         label="Email"
         type="email"

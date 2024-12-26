@@ -19,18 +19,17 @@ const AdminDiscountList = () => {
     const showSnackbar = useSnackbarStore((state) => state.showSnackbar);
 
     const [discountCodes, setDiscountCodes] = useState([]);
-
+    const getDiscountCodes = async () => {
+        try {
+            const response = await adminDiscountCodes();
+            setDiscountCodes(response.data.data); // Assuming the structure has 'data.data' for products
+        } catch (err) {
+            console.error(err, 'Failed to fetch products');
+        }
+    };
     useEffect(() => {
-        const getDiscountCodes = async () => {
-            try {
-                const response = await adminDiscountCodes();
-                setDiscountCodes(response.data.data); // Assuming the structure has 'data.data' for products
-            } catch (err) {
-                console.error(err, 'Failed to fetch products');
-            }
-        };
         getDiscountCodes();
-    }, [setDiscountCodes]);
+    }, [showSnackbar,setDiscountCodes]);
 
     // Handlers for actions
     const handleApproveApplication = async (approveData) => {
@@ -62,6 +61,7 @@ const AdminDiscountList = () => {
                                     <TableRow>
                                         <TableCell>Name</TableCell>
                                         <TableCell>User-Name</TableCell>
+                                        <TableCell>Current Placed Orders Count</TableCell>
                                         <TableCell>Is Redeemed</TableCell>
                                         <TableCell>Is Approved</TableCell>
                                         <TableCell>Actions</TableCell>
@@ -72,6 +72,8 @@ const AdminDiscountList = () => {
                                         <TableRow key={application.name}>
                                             <TableCell>{application.name}</TableCell>
                                             <TableCell>{application.user.name}</TableCell>
+                                            <TableCell>{application.user.discountApplicationCount}</TableCell>
+
                                             <TableCell>
                                                 <Chip
                                                     label={application.isRedeemed ? "Yes" : "No"}

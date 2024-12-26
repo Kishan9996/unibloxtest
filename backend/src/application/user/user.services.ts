@@ -116,7 +116,7 @@ export class UserServices {
           if (order.discountCode) {
             totalAmountSpent += order.amountAfterDiscount;
             totalDiscount += order.totalAmount - order.amountAfterDiscount;
-            discountCodes.add(order.discountCode.id);
+            discountCodes.add(order.discountCode.name);
           } else {
             totalAmountSpent += order.totalAmount;
           }

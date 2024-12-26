@@ -22,4 +22,8 @@ export class ProductRepository extends BaseRepository {
   public async findUniqueProduct(args: Prisma.ProductFindUniqueArgs) {
     return await this.prisma.product.findUnique(args);
   }
+
+  public async updateManyProducts(args: Prisma.ProductUpdateArgs) {
+    return await this.prisma.product.update(args);
+  }
 }

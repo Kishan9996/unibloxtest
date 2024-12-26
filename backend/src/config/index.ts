@@ -51,4 +51,4 @@ export const FORGOT_PASSWORD_URL = process.env.FORGOT_PASSWORD_URL ?? '';
 
 export const DEBUG_MODE = process.env.DEBUG_MODE === 'true';
 
-export const DISCOUNT_REP_THRESHOLD = parseInt(process.env.DISCOUNT_REP_THRESHOLD ?? '5', 5);
+export const DISCOUNT_REP_THRESHOLD = parseInt(process.env.DISCOUNT_REP_THRESHOLD ?? '5');

@@ -55,20 +55,12 @@ export class DiscountCodeController extends BaseRouter {
     try {
       const user: any = req.user;
       const fetchDiscountCodes = await this.discountCodeServices.fetchDiscountCodesWithUsersForUser(user);
-      if (fetchDiscountCodes) {
-        return this.responseHandler.success({
-          res,
-          data: fetchDiscountCodes,
-          message: this.responseMessages.success.discountCode_created,
-          statusCode: HttpStatusCodes.STATUS_OK.value,
-        });
-      } else {
-        return this.responseHandler.error({
-          res,
-          message: this.responseMessages.error.discountCode_create_error,
-          statusCode: HttpStatusCodes.STATUS_BAD_REQUEST.value,
-        });
-      }
+      return this.responseHandler.success({
+        res,
+        data: fetchDiscountCodes,
+        message: this.responseMessages.success.discountCode_created,
+        statusCode: HttpStatusCodes.STATUS_OK.value,
+      });
     } catch (error) {
       return this.responseHandler.error({
         res,

@@ -2,9 +2,7 @@ import { DiscountCodeRepository } from '../../domain/discountCode';
 import { DISCOUNT_REP_THRESHOLD } from '../../config';
 import { ApproveDiscountCodeSchemaType } from '../../interface/discountCode/schema';
 import { UserServices } from '../user/user.services';
-import { User } from '@prisma/client';
-import { RoleType } from '../../utils/dto/general';
-import { isA } from 'jest-mock-extended';
+import { generateCouponCode } from '../../utils/general';
 
 export class DiscountCodeServices {
   private discountCodeRepository: DiscountCodeRepository;
@@ -16,9 +14,11 @@ export class DiscountCodeServices {
   }
 
   async applyForDiscountCode(user: any) {
+    const name = generateCouponCode();
     return await this.discountCodeRepository.createDiscountCode({
       data: {
         userId: user.id,
+        name,
       },
     });
   }
@@ -52,7 +52,9 @@ export class DiscountCodeServices {
       },
       select: {
         id: true,
+        name: true,
         isRedeemed: true,
+        discountValue: true,
         isApprovedByAdmin: true,
         user: {
           select: {
@@ -66,11 +68,7 @@ export class DiscountCodeServices {
   }
 
   async fetchDiscountCodesWithUserForAdmin() {
-    return await this.fetchDiscountCodesWithUser({user:{
-      discountApplicationCount:{
-        gte:DISCOUNT_REP_THRESHOLD
-      }
-    }});
+    return await this.fetchDiscountCodesWithUser({});
   }
   async fetchDiscountCodesWithUsersForUser(user: any) {
     return await this.fetchDiscountCodesWithUser({
@@ -82,6 +80,7 @@ export class DiscountCodeServices {
   async approveForDiscountCode(data: ApproveDiscountCodeSchemaType) {
     const { userId, id } = data;
     const user = await this.userServices.findUserById(userId);
+
     const discountCode = await this.discountCodeRepository.findUniqueDiscountCode({
       where: {
         id,
@@ -89,7 +88,7 @@ export class DiscountCodeServices {
         isApprovedByAdmin: false,
       },
     });
-    if (user && user.discountApplicationCount >= DISCOUNT_REP_THRESHOLD && discountCode) {
+    if (discountCode && user && user.discountApplicationCount >= DISCOUNT_REP_THRESHOLD) {
       return await this.discountCodeRepository.updateDiscountCode({
         where: {
           id,

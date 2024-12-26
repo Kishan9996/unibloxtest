@@ -20,15 +20,17 @@ import useCartStore from '../store/cartStore';
 import { clearCartItemsApi, placeOrderCheckout, removeCartItemApi } from '../services/api/cart';
 
 const CartComponent = () => {
-  const { cart, cartCount, fetchCart, removeItemFromCart, clearCart, cartChangeCount, cartId, totalAmount, setTotalAmount, fetchDiscountCodeHandler, discountCodes } = useCartStore();
+  const { cart, cartCount, fetchCart, removeItemFromCart, clearCart, cartChangeCount, cartId, totalAmount, fetchDiscountCodeHandler, discountCodes } = useCartStore();
   const [open, setOpen] = useState(false);
+  const [discountedAmount, setDiscountedAmount] = useState(totalAmount);
+
   const [discountDialogOpen, setDiscountDialogOpen] = useState(false);
   const [selectedDiscountCode, setSelectedDiscountCode] = useState('');
 
   useEffect(() => {
     fetchCart(); // Fetch cart items on component mount or cart updates
     fetchDiscountCodeHandler();
-  }, [fetchCart, cartChangeCount, fetchDiscountCodeHandler]);
+  }, [fetchCart, cartChangeCount, fetchDiscountCodeHandler,setDiscountedAmount]);
 
   // Handler to open and close the cart dialog
   const handleOpen = () => setOpen(true);
@@ -56,16 +58,23 @@ const CartComponent = () => {
   };
 
   const managePlaceOrderFlow = async () => {
-    setTotalAmount();
     await placeOrderCheckout({ cartId, totalAmount, discountCodeId: selectedDiscountCode });
-    fetchCart();
+    handleDiscountDialogClose(); // Close the discount dialog after placing the order
   }
   // Handler for placing the order (final step after selecting a discount code)
   const handlePlaceOrder = async () => {
     await managePlaceOrderFlow();
-    handleDiscountDialogClose(); // Close the discount dialog after placing the order
+    window.location.reload();
     // Additional logic to process the order can be added here (e.g., API call to place the order)
   };
+
+  const handleSelectDiscount = (e) => {
+    setSelectedDiscountCode(e.target.value)
+    const discount = discountCodes.find(item=>item.id===e.target.value)
+    const discountAmount = totalAmount * (discount.discountValue / 100);
+    const discountedPrice = totalAmount - discountAmount;
+    setDiscountedAmount(discountedPrice)
+  }
 
   return (
     <>
@@ -145,17 +154,20 @@ const CartComponent = () => {
       {/* Discount Code Dialog */}
       <Dialog open={discountDialogOpen} onClose={handleDiscountDialogClose}>
         <DialogTitle>Apply Discount Code</DialogTitle>
+        <DialogTitle>Total Amount : {totalAmount}</DialogTitle>
+        {discountedAmount !== totalAmount && <DialogTitle>Discounted Amount : {discountedAmount}</DialogTitle>}
+
         <DialogContent>
           <FormControl fullWidth>
             <InputLabel>Discount Code</InputLabel>
             <Select
               value={selectedDiscountCode}
               label="Discount Code"
-              onChange={(e) => setSelectedDiscountCode(e.target.value)}
+              onChange={(e) => handleSelectDiscount(e)}
             >
               {discountCodes.map((code) => (
-                <MenuItem key={code.code} value={code.code}>
-                  {code.description} ({code.code})
+                <MenuItem key={code.id} value={code.id}>
+                  {code.name}
                 </MenuItem>
               ))}
             </Select>
