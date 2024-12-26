@@ -1,5 +1,5 @@
 import { BaseRepository } from '../../database/base.repository';
-import { Prisma, Order } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 export class OrderRepository extends BaseRepository {
   constructor() {

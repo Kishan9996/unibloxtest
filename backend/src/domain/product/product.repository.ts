@@ -6,11 +6,6 @@ export class ProductRepository extends BaseRepository {
     super(Prisma.ModelName.Product);
   }
 
-  /**
-   * ProductRepository extends the BaseRepository to provide database operations
-   * specific to the Product model. It includes methods for creating a new product
-   * in the database using Prisma ORM.
-   */
   public async createProduct(data: Prisma.ProductCreateArgs): Promise<Product | null> {
     return await this.prisma.product.create(data);
   }
