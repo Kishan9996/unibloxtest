@@ -66,7 +66,11 @@ export class DiscountCodeServices {
   }
 
   async fetchDiscountCodesWithUserForAdmin() {
-    return await this.fetchDiscountCodesWithUser({});
+    return await this.fetchDiscountCodesWithUser({user:{
+      discountApplicationCount:{
+        gte:DISCOUNT_REP_THRESHOLD
+      }
+    }});
   }
   async fetchDiscountCodesWithUsersForUser(user: any) {
     return await this.fetchDiscountCodesWithUser({

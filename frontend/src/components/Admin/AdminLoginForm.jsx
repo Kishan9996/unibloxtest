@@ -17,18 +17,22 @@ const AdminLoginForm = ({ onSuccess }) => {
 
     try {
       // Call the login function from your API service
+      localStorage.clear()
       const response = await adminLogin({ email, password });
+      if (response.data.success) {
+        // Assuming the response contains the token, extract it and store it in localStorage
+        const token = response.data.data.accessToken; // Adjust this depending on the actual response structure
+        const user = response.data.data.user; // Adjust this depending on the actual response structure
 
-      // Assuming the response contains the token, extract it and store it in localStorage
-      const token = response.data.data.accessToken; // Adjust this depending on the actual response structure
-      const user = response.data.data.user; // Adjust this depending on the actual response structure
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
 
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-
-      // Call the onSuccess callback and redirect to the products page
-      onSuccess();
-      navigate('/admin'); // Redirect to the products page upon successful login
+        // Call the onSuccess callback and redirect to the products page
+        onSuccess();
+        navigate('/admin'); // Redirect to the products page upon successful login
+      } else {
+        localStorage.clear()
+      }
     } catch (err) {
       setError('Login failed');
     } finally {

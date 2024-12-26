@@ -6,6 +6,8 @@ import { AuthProvider } from './components/Auth/Auth';
 import ProductsPage from './components/ProductList';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AdminLoginPage from './components/Admin/AdminLoginPage';
+import NotificationSnackbar from './components/NotificationSnackbar';
+import AdminHome from './pages/AdminHomePage';
 
 function App() {
   // Define a Material-UI theme
@@ -35,10 +37,11 @@ function App() {
       },
     },
   });
-
   return (
     <AuthProvider>
       <ThemeProvider theme={theme}>
+        {/* Global Snackbar */}
+        <NotificationSnackbar />
         <Router>
           <Header />
           <Routes>
@@ -46,6 +49,7 @@ function App() {
             <Route path="/" element={<Navigate to="/products" />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/admin-login" element={<AdminLoginPage />} />
+            <Route path="/admin" element={<AdminHome />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/products" element={<ProductsPage />} />
           </Routes>

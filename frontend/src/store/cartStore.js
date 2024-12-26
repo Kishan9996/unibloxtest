@@ -1,14 +1,23 @@
-import { create } from 'zustand';
-import { fetchCartItems } from '../services/api/cart';
+import { create } from "zustand";
+import { fetchCartItems } from "../services/api/cart";
+import { fetchDiscountCodes } from "../services/api/discount";
 
 const useCartStore = create((set) => ({
   cart: [],
   cartCount: 0,
   cartId: null,
-  totalAmount:0,
-  setTotalAmount: () => set((state) => ({ totalAmount: state.cart.reduce((total, item) => total + item.price * item.quantity, 0) })),
+  totalAmount: 0,
+  discountCodes: [],
+  setTotalAmount: () =>
+    set((state) => ({
+      totalAmount: state.cart.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      ),
+    })),
   cartChangeCount: 0,
-  increaseCartChangeCount: () => set((state) => ({ cartChangeCount: state.cartChangeCount + 1 })),
+  increaseCartChangeCount: () =>
+    set((state) => ({ cartChangeCount: state.cartChangeCount + 1 })),
   fetchCart: async () => {
     try {
       const response = await fetchCartItems();
@@ -22,11 +31,19 @@ const useCartStore = create((set) => ({
           product: item.product,
         }));
 
-        set({ cart: formattedCart, cartCount: data.items.length,cartId: data.id }); // Update both cart and count
+        set({
+          cart: formattedCart,
+          cartCount: data.items.length,
+          cartId: data.id,
+        }); // Update both cart and count
       }
     } catch (error) {
-      console.error('Failed to fetch cart items:', error);
+      console.error("Failed to fetch cart items:", error);
     }
+  },
+  fetchDiscountCodeHandler: async () => {
+    const response = await fetchDiscountCodes();
+    set({ discountCodes: response.data.data });
   },
   addToCart: (product, quantity) =>
     set((state) => {
@@ -41,7 +58,8 @@ const useCartStore = create((set) => ({
               ? { ...item, quantity: item.quantity + quantity }
               : item
           ),
-          cartCount: state.cart.filter((item) => item.product.id === product.id).length,
+          cartCount: state.cart.filter((item) => item.product.id === product.id)
+            .length,
         };
       }
       return {
@@ -55,7 +73,9 @@ const useCartStore = create((set) => ({
   // Remove item from cart
   removeItemFromCart: (cartItemId) =>
     set((state) => {
-      const updatedCart = state.cart.filter((item) => item.cartItemId !== cartItemId);
+      const updatedCart = state.cart.filter(
+        (item) => item.cartItemId !== cartItemId
+      );
       return {
         cart: updatedCart,
         cartCount: updatedCart.length, // Update the cartCount
