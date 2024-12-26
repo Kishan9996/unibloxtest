@@ -87,3 +87,5 @@ app.listen(APP.PORT, APP.HOST, () => {
   console.log('App is running on PORT:', APP.PORT);
   console.info(APP.generateAppLink());
 });
+
+export { app };
