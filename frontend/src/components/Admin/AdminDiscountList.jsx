@@ -61,7 +61,7 @@ const AdminDiscountList = () => {
                                     <TableRow>
                                         <TableCell>Name</TableCell>
                                         <TableCell>User-Name</TableCell>
-                                        <TableCell>Current Placed Orders Count</TableCell>
+                                        <TableCell>Current Placed Orders Count Of User</TableCell>
                                         <TableCell>Is Redeemed</TableCell>
                                         <TableCell>Is Approved</TableCell>
                                         <TableCell>Actions</TableCell>
@@ -89,7 +89,7 @@ const AdminDiscountList = () => {
                                                 />
                                             </TableCell>
                                             <TableCell>
-                                                {!application.isApprovedByAdmin && (
+                                                {!application.isApprovedByAdmin && application.isApproval && (
                                                     <>
                                                         <Button
                                                             variant="contained"

@@ -45,7 +45,7 @@ export class DiscountCodeServices {
   }
 
   async fetchDiscountCodesWithUser(whereClaus: Record<any, any>) {
-    return await this.discountCodeRepository.findManyDiscountCodes({
+    const result: any = await this.discountCodeRepository.findManyDiscountCodes({
       where: whereClaus,
       orderBy: {
         createdAt: 'desc',
@@ -65,6 +65,10 @@ export class DiscountCodeServices {
         },
       },
     });
+    return result.map((item: any) => ({
+      ...item,
+      isApproval: item.user.discountApplicationCount >= DISCOUNT_REP_THRESHOLD,
+    }));
   }
 
   async fetchDiscountCodesWithUserForAdmin() {

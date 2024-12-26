@@ -91,7 +91,7 @@ const ProductsPage = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button
+                {product.stock == 0 ? <>Out Of Stock</> : <>                <Button
                   size="small"
                   onClick={() => handleDecrease(product.id)}
                   variant="contained"
@@ -100,27 +100,27 @@ const ProductsPage = () => {
                 >
                   Decrease
                 </Button>
-                <Typography sx={{ marginX: 2, alignSelf: 'center' }}>
-                  {quantities[product.id]}
-                </Typography>
-                <Button
-                  size="small"
-                  onClick={() => handleIncrease(product.id, product.stock)}
-                  variant="contained"
-                  color="primary"
-                  disabled={quantities[product.id] === product.stock}
-                >
-                  Increase
-                </Button>
-                <Button
-                  size="small"
-                  onClick={() => handleAddToCart(product.id)}
-                  variant="outlined"
-                  color="success"
-                  disabled={quantities[product.id] === 0}
-                >
-                  Add to Cart
-                </Button>
+                  <Typography sx={{ marginX: 2, alignSelf: 'center' }}>
+                    {quantities[product.id]}
+                  </Typography>
+                  <Button
+                    size="small"
+                    onClick={() => handleIncrease(product.id, product.stock)}
+                    variant="contained"
+                    color="primary"
+                    disabled={quantities[product.id] === product.stock}
+                  >
+                    Increase
+                  </Button>
+                  <Button
+                    size="small"
+                    onClick={() => handleAddToCart(product.id)}
+                    variant="outlined"
+                    color="success"
+                    disabled={quantities[product.id] === 0}
+                  >
+                    Add to Cart
+                  </Button></>}
               </CardActions>
             </Card>
           </Grid>
