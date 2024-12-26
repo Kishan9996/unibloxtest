@@ -271,7 +271,7 @@ export class CartServices {
 
       // update  discount applicable count by comparing the previous count matches with threshold otherwise reset
       const discountApplicationCount =
-        user.discountApplicationCount === DISCOUNT_REP_THRESHOLD ? 0 : user.discountApplicationCount + 1;
+        user.discountApplicationCount >= DISCOUNT_REP_THRESHOLD ? 0 : user.discountApplicationCount + 1;
 
       await this.userService.updateUserDetails({
         where: {

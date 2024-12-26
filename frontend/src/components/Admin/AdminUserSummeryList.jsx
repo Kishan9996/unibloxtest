@@ -15,9 +15,7 @@ import { useEffect, useState } from 'react';
 import '../../styles/headerTableStyles.css'
 
 const AdminUserList = () => {
-
     const [userData, setDiscountUserData] = useState([]);
-
     useEffect(() => {
         const getDiscountUserData = async () => {
             try {
@@ -50,12 +48,12 @@ const AdminUserList = () => {
                                         <TableCell className="tableCell">Total Discount ($)</TableCell>
                                     </TableRow>
                                 </TableHead>
-                                <TableBody>
+                                {userData.length > 0 ? <TableBody>
                                     {userData.map((user) => (
                                         <TableRow key={user.user.id}>
                                             <TableCell>{user.user.name}</TableCell>
                                             <TableCell>{user.totalItemsPurchased}</TableCell>
-                                            <TableCell>{user.totalAmountSpent.toFixed(2)}</TableCell>
+                                            <TableCell>{user?.totalAmountSpent}</TableCell>
                                             <TableCell>
                                                 {user.discountCodes.length > 0 ? (
                                                     user.discountCodes.map((code, index) => (
@@ -71,10 +69,11 @@ const AdminUserList = () => {
                                                     <Chip label="No Discount" color="default" size="small" />
                                                 )}
                                             </TableCell>
-                                            <TableCell>{user.totalDiscount.toFixed(2)}</TableCell>
+                                            <TableCell>{user.totalDiscount}</TableCell>
                                         </TableRow>
                                     ))}
-                                </TableBody>
+                                </TableBody> : <TableBody>No Data Found</TableBody>}
+
                             </Table>
                         </TableContainer>
                     </Paper>

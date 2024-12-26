@@ -23,6 +23,7 @@ const ProductsPage = () => {
         }, {});
         setQuantities(initialQuantities);
       } catch (err) {
+        console.error(err)
         setError('Failed to fetch products');
       }
     };
@@ -62,6 +63,7 @@ const ProductsPage = () => {
         // // Once the API call is successful, update the cart state
         // addToCart(products.find((product) => product.id === productId), quantity);
       } catch (err) {
+        console.error(err)
         setError('Failed to add product to the cart');
       }
     }

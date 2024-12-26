@@ -12,8 +12,6 @@ const Header = () => {
   const navigate = useNavigate(); // Use useNavigate to redirect the user
   const { currentUser, setCurrentUser } = useAuthStore();
   const { discountCodes, fetchDiscountCodeHandler } = useCartStore();
-  console.log(discountCodes);
-
   const handleLogout = () => {
     if (currentUser.role === "ADMIN") {
       localStorage.clear()

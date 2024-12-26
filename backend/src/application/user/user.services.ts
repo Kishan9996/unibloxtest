@@ -86,7 +86,7 @@ export class UserServices {
             discountCode: {
               select: {
                 id: true,
-                discountValue: true,
+                name: true,
               },
             },
             cart: {
@@ -103,6 +103,7 @@ export class UserServices {
         },
       },
     });
+
     if (result?.length) {
       const data = result.map((user: any) => {
         let totalItemsPurchased = 0;
