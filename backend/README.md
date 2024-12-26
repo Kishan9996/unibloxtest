@@ -33,3 +33,9 @@ Follow these steps to set up and run the backend:
    After running the backend, you can access the Swagger API documentation at:
    ```
    http://localhost:5015/swagger-doc/
+
+
+5. **To run test-cases**  
+   ```bash
+   npm run test
+   ```
