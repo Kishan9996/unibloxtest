@@ -36,7 +36,7 @@ const useCartStore = create((set,get) => ({
           cartCount: data.items.length,
           cartId: data.id,
           totalAmount: formattedCart.reduce(
-            (total, item) => total + item.price * item.quantity,
+            (total, item) => total + item.price,
             0
           ),
         }); // Update both cart and count

@@ -1,30 +1,54 @@
-# Product and Cart Management System
+# Product and Cart Management System  
 
-This repository contains the code for both the **backend** and **frontend** of the Product and Cart Management System. It is structured as a monorepo with separate directories for the frontend and backend applications.
+This repository contains the source code for the **Product and Cart Management System**, structured as a monorepo with separate directories for the backend and frontend applications.  
 
-## Project Structure
+## Project Structure  
 
 ```
-/backend      - Backend code (Node.js, TypeScript, Prisma, SQLite)
-/frontend     - Frontend code (React, authentication, product/cart management)
-/README.md    - This file (Root-level README)
-```
+/backend      - Backend application (Node.js, TypeScript, Prisma, SQLite)
+/frontend     - Frontend application (React, authentication, product/cart management)
+/README.md    - Root-level README file
+```  
 
-## Backend
+## Backend  
 
-The backend is a Node.js application that uses TypeScript, Prisma, and SQLite. It handles product and cart management, user authentication, and an admin panel for managing discounts and user details.
+The backend is built with Node.js and TypeScript and uses Prisma with SQLite for database management. It provides functionality for product and cart operations, user authentication, and an admin panel for managing discounts and user details.  
 
-For setup and usage instructions, please refer to the [backend README](./backend/README.md).
+For detailed setup and usage instructions, see the [backend README](./backend/README.md).  
 
-## Frontend
+## Frontend  
 
-The frontend is a React-based application that provides product listing, cart management, and a checkout flow, as well as user authentication and an admin panel for approving discounts.
+The frontend is a React-based application that includes product listing, cart management, a checkout flow, user authentication, and an admin panel for approving discounts.  
 
-For setup and usage instructions, please refer to the [frontend README](./frontend/README.md).
+For detailed setup and usage instructions, see the [frontend README](./frontend/README.md).  
 
-## Swagger Documentation
+## API Documentation  
 
-The backend includes Swagger API documentation, accessible at:
+The backend includes Swagger API documentation, which can be accessed at:  
 ```
 http://localhost:5015/swagger-doc/#/
+```  
+**Username:** `admin`  
+**Password:** `admin`  
+
+## Application Access  
+
+### Admin Page  
+
+Access the admin panel at:  
 ```
+http://localhost:5173/admin-login
+```  
+**Credentials:**  
+- **Email:** `admin@uniblox.com`  
+- **Password:** `Admin@123`  
+
+### User Page  
+
+Access the user login page at:  
+```
+http://localhost:5173/login
+```  
+**Credentials:**  
+- **Email:** `user@uniblox.com`  
+- **Password:** `User@123`  
