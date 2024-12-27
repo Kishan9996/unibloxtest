@@ -18,7 +18,7 @@ This project is a React-based application that handles product and cart manageme
    npm install
    ```
 
-2. Create a `.env` file and add the environment variables. Refer to the example environment configuration.
+2. Create a `.env` file and add the environment variables from example.env. Refer to the example environment configuration.
 
 ## Running the Application
 
